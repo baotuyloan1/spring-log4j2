@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <!--    popular appenders-->
+    <!--    console appender-->
+    <!--    file appender  that uses the FileManager to write the data to a defined file-->
+    <!--    jdbc appender writes data to a database using standard JDBC driver-->
+    <!--    async appender encapsulates another appender and uses a different thread to write data which results in
+        asynchronous logging.
+    -->
+    <Appenders>
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <CustomAppender name="CustomAppender"/>
+
+        <!--        logs be formatted in HTML-->
+        <Console name="ConsoleHtml">
+            <HTMLLayout>
+            </HTMLLayout>
+        </Console>
+
+        <!--        Log4j 2 Filters-->
+        <!--       THe filter allows log event to be checked to determine if or how they should be published
+                    A filter execution can end with one of three values - ACCEPT, DENY, or NEUTRAL
+                    Filters can be configured in one of the following locations:
+                    - Directly in the  configuration for context - wide filters
+                    - In the logger for the logger specific filtering
+                    - In the Appender for appender specific filtering
+                    - In the Appender reference to determine if the log event should reach a given appender
+
+                    Burst , Composite, Threshold...
+            -->
+        <!--        The Threshold Filter-->
+        <!--       append data to then end of the file -->
+        <File name="LogToFile" fileName="logs/warning-user.log" append="true">
+            <!--            PatternLayout is a powerful tool. It allows us to structure logs event without the need of writing any code-->
+            <!--            we only need to define the pattern that we will use and include that in our configuration-->
+            <!--            %d one is responsible for the log event date-->
+            <!--            %msg is responsible for the message that we passed as the log event-->
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level - %msg%n"/>
+
+            <!--            include all logs with level WARN or higher we could use the ThresholdFilter
+                        onMatch: hành động sẽ được thư hiện khi 1 sự kiện log phù hợp với điều kiện của bộ loc.
+                        . Nếu onMatch được đặt là "ACCEPT", điều này có nghĩa là sự kiện log sẽ được chấp nhận và được chuyển tiếp để ghi vào đích hoặc ứng dụng
+                         Nếu onMatch được đặt là "DENY", sự kiện log sẽ bị từ chối và không được ghi lại.
+
+                         onMismatch: Thuộc tính này xác định hành động sẽ được thực hiện khi một sự kiện log không phù hợp với điều kiện của bộ lọc. Tương tự như onMatch, bạn có thể đặt onMismatch là "ACCEPT" để cho phép sự kiện log không phù hợp tiếp tục, hoặc "DENY" để từ chối sự kiện log không phù hợp.
+            -->
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+    </Appenders>
+    <!--   defines the logger, we define the configuration of different loggers     -->
+    <Loggers>
+
+        <Root level="info">
+            <AppenderRef ref="LogToConsole"/>
+            <!--            <AppenderRef ref="CustomAppender"/>-->
+            <!--            <AppenderRef ref="ConsoleHtml"/>-->
+        </Root>
+        <Logger name="com.example.logging_log4j2" level="warn" additivity="true">
+            <AppenderRef ref="LogToFile"/>
+        </Logger>
+
+
+        <!--   root logger     -->
+        <!-- root logger definition tells Log4j2 to use that configuration when a dedicated configuration for a logger is not found   -->
+        <!--  default log level should be set to INFO and the log events should be sent to the appender with the name Console-->
+
+
+    </Loggers>
+</Configuration>

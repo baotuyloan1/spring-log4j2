@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Log4j2 Demo</title>
+</head>
+<body>
+
+<h1>Form</h1>
+<form action="#" th:action="@{/}" th:object="${account}" method="post">
+    <p>Username: <label>
+        <input type="text" th:field="*{username}"/>
+    </label></p>
+    <p>Password: <label><input type="password" th:field="*{password}"/></label></p>
+    <p><input type="submit" value="Submit"/></p>
+</form>
+
+</body>
+</html>
