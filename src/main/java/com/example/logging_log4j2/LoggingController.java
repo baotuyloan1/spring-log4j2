@@ -14,7 +14,7 @@ public class LoggingController {
 
     /**
      * in the majority of the cases it will be a private, static object inside a class.
-     *
+     * <p>
      * create the logger object
      */
     private static final Logger LOGGER = LogManager.getLogger(LoggingController.class);
@@ -24,6 +24,11 @@ public class LoggingController {
     public String showForm(Model model) {
         Account account = new Account();
         model.addAttribute(account);
+        LOGGER.error("This runtime exception");
+        LOGGER.warn("Hello waring");
+        if (true)
+            throw new RuntimeException("This runtime exception");
+
         return "welcome";
     }
 
@@ -38,10 +43,11 @@ public class LoggingController {
         LOGGER.info("info console"); //log event
         LOGGER.error("error file");
         LOGGER.warn("Waring file");
-        if (account.getUsername().isEmpty() || account.getUsername() == null){
+        if (account.getUsername().isEmpty() || account.getUsername() == null) {
             return "redirect:/";
         }
         return "greeting";
     }
+
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
-    <!--    popular appenders-->
+    <!--    popular appender-->
     <!--    console appender-->
     <!--    file appender  that uses the FileManager to write the data to a defined file-->
     <!--    jdbc appender writes data to a database using standard JDBC driver-->
@@ -52,6 +52,13 @@
                 <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
         </File>
+
+        <File name="ErrorFile" fileName="logs/error-user.log" append="true">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level - %msg%n" />
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
     </Appenders>
     <!--   defines the logger, we define the configuration of different loggers     -->
     <Loggers>
@@ -61,9 +68,12 @@
             <!--            <AppenderRef ref="CustomAppender"/>-->
             <!--            <AppenderRef ref="ConsoleHtml"/>-->
         </Root>
-        <Logger name="com.example.logging_log4j2" level="warn" additivity="true">
-            <AppenderRef ref="LogToFile"/>
+        <Logger name="com.example.logging_log4j2"  additivity="false">
+            <AppenderRef ref="LogToFile" level="warn"/>
+            <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="ErrorFile" level="error"/>
         </Logger>
+<!--        -->
 
 
         <!--   root logger     -->
